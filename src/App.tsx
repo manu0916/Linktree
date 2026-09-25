@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useLinktree } from './hooks/useLinktree';
 import { PublicView } from './components/PublicView';
 import { AdminDashboard } from './components/AdminDashboard';
@@ -32,29 +32,65 @@ export default function App() {
   const [currentView, setCurrentView] = useState<'public' | 'admin'>('public');
   const [loginModalOpen, setLoginModalOpen] = useState(false);
 
-  // Check URL hash for direct #admin route or auto-switch to admin if logged in
-  useEffect(() => {
-    const handleHash = () => {
-      if (window.location.hash === '#admin') {
+  // Check if URL specifies /admin (via pathname, hash, or search param)
+  const checkAdminRoute = useCallback(() => {
+    try {
+      const path = (window.location.pathname || '').toLowerCase();
+      const hash = (window.location.hash || '').toLowerCase();
+      const search = (window.location.search || '').toLowerCase();
+      
+      const isRouteAdmin =
+        path === '/admin' ||
+        path.endsWith('/admin') ||
+        hash === '#admin' ||
+        hash === '#/admin' ||
+        search === '?admin' ||
+        search.includes('admin');
+
+      if (isRouteAdmin) {
         if (isAdmin) {
           setCurrentView('admin');
+          setLoginModalOpen(false);
         } else {
+          setCurrentView('public');
           setLoginModalOpen(true);
         }
+      } else {
+        if (!isAdmin) {
+          setCurrentView('public');
+          setLoginModalOpen(false);
+        }
       }
-    };
-
-    handleHash();
-    window.addEventListener('hashchange', handleHash);
-    return () => window.removeEventListener('hashchange', handleHash);
+    } catch {
+      // ignore
+    }
   }, [isAdmin]);
 
-  // When admin logs in, switch view automatically
+  // Listen for navigation and hash changes
+  useEffect(() => {
+    checkAdminRoute();
+    window.addEventListener('popstate', checkAdminRoute);
+    window.addEventListener('hashchange', checkAdminRoute);
+
+    return () => {
+      window.removeEventListener('popstate', checkAdminRoute);
+      window.removeEventListener('hashchange', checkAdminRoute);
+    };
+  }, [checkAdminRoute]);
+
+  // When admin logs in, switch view automatically and update URL
   const handleLogin = (email: string, pass: string): boolean => {
     const success = login(email, pass);
     if (success) {
       setCurrentView('admin');
-      window.location.hash = '#admin';
+      setLoginModalOpen(false);
+      try {
+        if (window.location.pathname !== '/admin') {
+          window.history.pushState(null, '', '/admin');
+        }
+      } catch {
+        window.location.hash = '#admin';
+      }
     }
     return success;
   };
@@ -62,7 +98,33 @@ export default function App() {
   const handleLogout = () => {
     logout();
     setCurrentView('public');
-    window.location.hash = '';
+    setLoginModalOpen(false);
+    try {
+      window.history.pushState(null, '', '/');
+    } catch {
+      window.location.hash = '';
+    }
+  };
+
+  const handleCloseLoginModal = () => {
+    setLoginModalOpen(false);
+    // If closing without being logged in, remove /admin from the address bar
+    if (!isAdmin) {
+      try {
+        window.history.pushState(null, '', '/');
+      } catch {
+        window.location.hash = '';
+      }
+    }
+  };
+
+  const handleViewPublic = () => {
+    setCurrentView('public');
+    try {
+      window.history.pushState(null, '', '/');
+    } catch {
+      window.location.hash = '';
+    }
   };
 
   return (
@@ -85,10 +147,7 @@ export default function App() {
           onImportData={importData}
           onResetToDefault={resetToDefault}
           onLogout={handleLogout}
-          onViewPublic={() => {
-            setCurrentView('public');
-            window.location.hash = '';
-          }}
+          onViewPublic={handleViewPublic}
           totalClicks={totalClicks}
         />
       ) : (
@@ -96,16 +155,30 @@ export default function App() {
           state={data}
           isAdmin={isAdmin}
           onLinkClick={incrementClick}
-          onOpenAdminLogin={() => setLoginModalOpen(true)}
-          onOpenAdminDashboard={() => setCurrentView('admin')}
+          onOpenAdminLogin={() => {
+            setLoginModalOpen(true);
+            try {
+              window.history.pushState(null, '', '/admin');
+            } catch {
+              window.location.hash = '#admin';
+            }
+          }}
+          onOpenAdminDashboard={() => {
+            setCurrentView('admin');
+            try {
+              window.history.pushState(null, '', '/admin');
+            } catch {
+              window.location.hash = '#admin';
+            }
+          }}
           onAddLead={addLead}
         />
       )}
 
-      {/* Admin Login Modal */}
+      {/* Admin Login Modal (Triggered exclusively when visiting /admin) */}
       <AdminLoginModal
         isOpen={loginModalOpen}
-        onClose={() => setLoginModalOpen(false)}
+        onClose={handleCloseLoginModal}
         onLogin={handleLogin}
       />
     </div>

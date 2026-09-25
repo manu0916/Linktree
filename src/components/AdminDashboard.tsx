@@ -973,22 +973,29 @@ git push -u origin main
               )}
             </section>
 
-            {/* SECTION 7: RODAPÉ & ACESSO ADMIN */}
+            {/* SECTION 7: RODAPÉ & ACESSO RESTRITO */}
             <section className="p-6 rounded-3xl bg-zinc-900/60 border border-zinc-800 space-y-4">
               <div className="flex items-center gap-2.5">
                 <div className="w-8 h-8 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center">
                   <Shield className="w-4 h-4" />
                 </div>
                 <div>
-                  <h3 className="text-sm font-bold text-white">Rodapé e Segurança</h3>
+                  <h3 className="text-sm font-bold text-white">Rodapé & Acesso Restrito</h3>
                   <p className="text-xs text-zinc-400">
-                    Texto de direitos autorais e botão de acesso ao login de administrador.
+                    O acesso ao painel de administração é exclusivo pela URL <code className="text-cyan-400 font-mono font-bold bg-cyan-950/60 px-1.5 py-0.5 rounded">/admin</code>. Nenhum botão público é exibido aos visitantes.
                   </p>
                 </div>
               </div>
 
+              <div className="p-3 rounded-2xl bg-cyan-950/20 border border-cyan-800/30 text-xs text-cyan-300 flex items-center gap-2">
+                <Shield className="w-4 h-4 shrink-0 text-cyan-400" />
+                <span>
+                  Para entrar no painel: basta digitar <strong>/admin</strong> no final da URL no navegador.
+                </span>
+              </div>
+
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-3 border-t border-zinc-800">
-                <div className="space-y-1.5">
+                <div className="space-y-1.5 sm:col-span-2">
                   <label className="text-xs font-semibold text-zinc-300">Texto do Rodapé</label>
                   <input
                     type="text"
@@ -999,30 +1006,7 @@ git push -u origin main
                   />
                 </div>
 
-                <div className="space-y-1.5">
-                  <label className="text-xs font-semibold text-zinc-300">Rótulo do Botão Admin</label>
-                  <input
-                    type="text"
-                    value={features?.adminButtonLabel || 'Admin'}
-                    onChange={(e) => onUpdateFeatures({ adminButtonLabel: e.target.value })}
-                    placeholder="Admin"
-                    className="w-full px-3.5 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-white outline-none focus:border-cyan-500"
-                  />
-                </div>
-
                 <div className="flex items-center gap-3 pt-2 sm:col-span-2">
-                  <label className="p-3 rounded-2xl bg-zinc-950 border border-zinc-800 flex items-center justify-between flex-1 cursor-pointer">
-                    <span className="text-xs text-zinc-300 font-medium">
-                      Exibir Botão de Acesso Admin no Rodapé
-                    </span>
-                    <input
-                      type="checkbox"
-                      checked={features?.showAdminButtonInFooter !== false}
-                      onChange={(e) => onUpdateFeatures({ showAdminButtonInFooter: e.target.checked })}
-                      className="rounded text-cyan-500 focus:ring-cyan-500"
-                    />
-                  </label>
-
                   <label className="p-3 rounded-2xl bg-zinc-950 border border-zinc-800 flex items-center justify-between flex-1 cursor-pointer">
                     <span className="text-xs text-zinc-300 font-medium">
                       Repetir Ícones Sociais no Rodapé

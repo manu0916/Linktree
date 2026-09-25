@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { X, Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react';
-import { ADMIN_CREDENTIALS } from '../data/defaultData';
+import { X, Lock, Mail, Eye, EyeOff, ShieldCheck, ArrowRight } from 'lucide-react';
 
 interface AdminLoginModalProps {
   isOpen: boolean;
@@ -37,12 +36,6 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
     }, 350);
   };
 
-  const handleFillCredentials = () => {
-    setEmail(ADMIN_CREDENTIALS.email);
-    setPassword(ADMIN_CREDENTIALS.password);
-    setErrorMessage('');
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/85 backdrop-blur-md p-4 animate-fadeIn">
       <div className="max-w-md w-full bg-zinc-950 border border-zinc-800 rounded-3xl shadow-2xl p-6 md:p-8 relative overflow-hidden text-zinc-100 space-y-6">
@@ -71,26 +64,8 @@ export const AdminLoginModal: React.FC<AdminLoginModalProps> = ({
         </div>
 
         <p className="text-xs text-zinc-400 leading-relaxed">
-          Acesse o painel para gerenciar links, editar informações do perfil, alterar temas e visualizar métricas de cliques.
+          Acesse o painel para gerenciar links, editar informações do perfil, alterar temas e personalizar seu site.
         </p>
-
-        {/* Quick Autofill Helper for convenience */}
-        <div className="p-3 bg-zinc-900/80 border border-zinc-800/80 rounded-2xl flex items-center justify-between gap-3">
-          <div className="text-[11px] text-zinc-400">
-            <span className="text-zinc-300 font-semibold">Credenciais de Admin:</span>
-            <div className="font-mono text-zinc-400 text-[10px] mt-0.5 truncate">
-              {ADMIN_CREDENTIALS.email}
-            </div>
-          </div>
-          <button
-            type="button"
-            onClick={handleFillCredentials}
-            className="px-3 py-1.5 rounded-xl bg-cyan-950/60 border border-cyan-700/50 hover:bg-cyan-900/60 text-cyan-300 text-xs font-bold flex items-center gap-1.5 transition-all shrink-0 cursor-pointer shadow-sm"
-          >
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Preencher</span>
-          </button>
-        </div>
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-4">

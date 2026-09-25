@@ -38,8 +38,9 @@ http://localhost:3000
 ---
 
 ## 🔐 Acesso ao Painel Admin
-- No rodapé da página pública, clique no botão discreto **"⚙️ Admin"**.
-- Ou acesse diretamente pelo estado inicial da aplicação.
+- O acesso ao painel de administração é protegido e exclusivo via URL:
+  - Adicione **/admin** ao final da URL do site no navegador (ex: `http://localhost:3000/admin` ou `https://seusite.com/admin`).
+  - Nenhum botão administrativo é exibido na página pública para os visitantes.
 - **Credenciais padrão:**
   - E-mail: `manu4432d@gmail.com`
   - Senha: `75319@Manu2`
