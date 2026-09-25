@@ -20,6 +20,7 @@ import {
   Mail,
   Check,
   Send,
+  Download,
 } from 'lucide-react';
 import { LinktreeState, LinkItem } from '../types/linktree';
 import { IconRenderer } from './IconRenderer';
@@ -599,29 +600,41 @@ export const PublicView: React.FC<PublicViewProps> = ({
           {profile.footerText || 'Criado com Linktree • Feito para você'}
         </p>
 
-        {/* Discreet Admin Lock Button */}
-        {features?.showAdminButtonInFooter !== false && (
-          <div className="flex items-center gap-3 pt-1">
-            {isAdmin ? (
-              <button
-                onClick={onOpenAdminDashboard}
-                className="flex items-center gap-1 text-[11px] text-cyan-400 hover:text-cyan-300 font-semibold transition-colors cursor-pointer"
-              >
-                <Shield className="w-3.5 h-3.5" />
-                <span>Painel de Controle Ativo</span>
-              </button>
-            ) : (
-              <button
-                onClick={onOpenAdminLogin}
-                className="flex items-center gap-1 text-[10px] text-zinc-500 hover:text-zinc-300 transition-colors p-1 cursor-pointer"
-                title="Área do Administrador"
-              >
-                <Lock className="w-3 h-3" />
-                <span>{features?.adminButtonLabel || 'Admin'}</span>
-              </button>
-            )}
-          </div>
-        )}
+        {/* Discreet Admin Lock Button & Download ZIP */}
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+          <a
+            href="/site-linktree.zip"
+            download="site-linktree.zip"
+            className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 hover:bg-emerald-500/25 text-emerald-400 border border-emerald-500/30 text-[11px] font-semibold transition-all cursor-pointer shadow-sm"
+            title="Baixar Arquivo ZIP do Projeto"
+          >
+            <Download className="w-3 h-3" />
+            <span>Baixar ZIP do Site</span>
+          </a>
+
+          {features?.showAdminButtonInFooter !== false && (
+            <>
+              {isAdmin ? (
+                <button
+                  onClick={onOpenAdminDashboard}
+                  className="flex items-center gap-1 text-[11px] text-cyan-400 hover:text-cyan-300 font-semibold transition-colors cursor-pointer"
+                >
+                  <Shield className="w-3.5 h-3.5" />
+                  <span>Painel de Controle Ativo</span>
+                </button>
+              ) : (
+                <button
+                  onClick={onOpenAdminLogin}
+                  className="flex items-center gap-1 text-[10px] text-zinc-500 hover:text-zinc-300 transition-colors p-1 cursor-pointer"
+                  title="Área do Administrador"
+                >
+                  <Lock className="w-3 h-3" />
+                  <span>{features?.adminButtonLabel || 'Admin'}</span>
+                </button>
+              )}
+            </>
+          )}
+        </div>
       </footer>
 
       {/* Pix Modal */}
