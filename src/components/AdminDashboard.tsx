@@ -317,6 +317,16 @@ git push -u origin main
 
           {/* Right Action Buttons */}
           <div className="flex items-center gap-2">
+            <a
+              href="/site-linktree.zip"
+              download="site-linktree.zip"
+              className="px-3 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-emerald-600/20 transition-all cursor-pointer"
+              title="Baixar Arquivo ZIP do Projeto Completo"
+            >
+              <Download className="w-4 h-4" />
+              <span className="hidden sm:inline">Baixar ZIP</span>
+            </a>
+
             <button
               onClick={onViewPublic}
               className="px-3.5 py-2 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold flex items-center gap-1.5 shadow-md shadow-cyan-600/20 transition-all cursor-pointer"
@@ -1903,6 +1913,31 @@ git push -u origin main
         {/* ======================================================== */}
         {activeTab === 'deploy' && (
           <div className="space-y-6">
+            {/* Download ZIP Card */}
+            <div className="p-6 rounded-3xl bg-gradient-to-br from-emerald-950/40 via-zinc-900/60 to-zinc-900/60 border border-emerald-800/40 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div className="space-y-1">
+                  <div className="flex items-center gap-2 text-emerald-400">
+                    <Download className="w-5 h-5" />
+                    <h2 className="text-base font-bold text-white">
+                      Baixar Arquivo ZIP do Site Completo
+                    </h2>
+                  </div>
+                  <p className="text-xs text-zinc-300">
+                    Código-fonte 100% pronto para rodar localmente com <code className="text-emerald-300 bg-emerald-950/60 px-1 py-0.5 rounded">npm install</code> e <code className="text-emerald-300 bg-emerald-950/60 px-1 py-0.5 rounded">npm run dev</code> ou hospedar em Cloudflare Pages, Vercel ou Netlify.
+                  </p>
+                </div>
+                <a
+                  href="/site-linktree.zip"
+                  download="site-linktree.zip"
+                  className="px-5 py-3 rounded-2xl bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 text-white text-xs font-black uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25 transition-all cursor-pointer whitespace-nowrap"
+                >
+                  <Download className="w-4 h-4" />
+                  <span>Baixar site-linktree.zip</span>
+                </a>
+              </div>
+            </div>
+
             <div className="p-6 rounded-3xl bg-zinc-900/60 border border-zinc-800 space-y-5">
               <div className="flex items-center gap-2 text-cyan-400">
                 <Github className="w-6 h-6" />
