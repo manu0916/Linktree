@@ -18,6 +18,9 @@ export default function App() {
     incrementClick,
     updateProfile,
     updateTheme,
+    updateFeatures,
+    addLead,
+    deleteLead,
     setPresetTheme,
     resetToDefault,
     exportData,
@@ -63,7 +66,7 @@ export default function App() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-zinc-950">
+    <div className="w-full min-h-screen bg-zinc-950 font-sans text-zinc-100">
       {currentView === 'admin' && isAdmin ? (
         <AdminDashboard
           state={data}
@@ -75,6 +78,9 @@ export default function App() {
           onToggleLinkActive={toggleLinkActive}
           onSelectThemePreset={setPresetTheme}
           onUpdateTheme={updateTheme}
+          onUpdateFeatures={updateFeatures}
+          onAddLead={addLead}
+          onDeleteLead={deleteLead}
           onExportData={exportData}
           onImportData={importData}
           onResetToDefault={resetToDefault}
@@ -92,6 +98,7 @@ export default function App() {
           onLinkClick={incrementClick}
           onOpenAdminLogin={() => setLoginModalOpen(true)}
           onOpenAdminDashboard={() => setCurrentView('admin')}
+          onAddLead={addLead}
         />
       )}
 

@@ -1,5 +1,12 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { LinktreeState, LinkItem, ProfileData, ThemeConfig } from '../types/linktree';
+import {
+  LinktreeState,
+  LinkItem,
+  ProfileData,
+  ThemeConfig,
+  FrontendFeaturesConfig,
+  NewsletterLead,
+} from '../types/linktree';
 import { INITIAL_STATE, ADMIN_CREDENTIALS, THEME_PRESETS } from '../data/defaultData';
 
 const STORAGE_KEY = 'linktree_custom_state_v1';
@@ -25,6 +32,15 @@ export function useLinktree() {
             },
           },
           theme: parsed.theme || INITIAL_STATE.theme,
+          features: {
+            ...INITIAL_STATE.features,
+            ...(parsed.features || {}),
+            customDesign: {
+              ...INITIAL_STATE.features.customDesign,
+              ...(parsed.features?.customDesign || {}),
+            },
+          },
+          leads: Array.isArray(parsed.leads) ? parsed.leads : INITIAL_STATE.leads,
           links: Array.isArray(parsed.links) ? parsed.links : INITIAL_STATE.links,
         };
       }
@@ -51,6 +67,19 @@ export function useLinktree() {
       console.error('Error saving Linktree state:', e);
     }
   }, [data]);
+
+  // Sync Document Title & Meta Description with custom settings
+  useEffect(() => {
+    if (data.features?.pageTitle) {
+      document.title = data.features.pageTitle;
+    }
+    if (data.features?.metaDescription) {
+      const meta = document.querySelector('meta[name="description"]');
+      if (meta) {
+        meta.setAttribute('content', data.features.metaDescription);
+      }
+    }
+  }, [data.features?.pageTitle, data.features?.metaDescription]);
 
   // Track profile visitor once per session
   useEffect(() => {
@@ -100,8 +129,32 @@ export function useLinktree() {
     }
   }, []);
 
+  // Play subtle feedback click sound if enabled
+  const playClickSound = useCallback(() => {
+    if (!data.features?.soundEffectsEnabled) return;
+    try {
+      const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, ctx.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.05);
+      gain.gain.setValueAtTime(0.08, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.05);
+    } catch {
+      // ignore
+    }
+  }, [data.features?.soundEffectsEnabled]);
+
   // Increment click count for a link
   const incrementClick = useCallback((linkId: string) => {
+    playClickSound();
     setData((prev) => ({
       ...prev,
       links: prev.links.map((link) =>
@@ -109,7 +162,7 @@ export function useLinktree() {
       ),
       lastUpdated: Date.now(),
     }));
-  }, []);
+  }, [playClickSound]);
 
   // Add Link
   const addLink = useCallback((newLinkData: Partial<LinkItem>) => {
@@ -221,6 +274,42 @@ export function useLinktree() {
     }));
   }, []);
 
+  // Update Frontend Features Configuration
+  const updateFeatures = useCallback((featuresFields: Partial<FrontendFeaturesConfig>) => {
+    setData((prev) => ({
+      ...prev,
+      features: {
+        ...prev.features,
+        ...featuresFields,
+      },
+      lastUpdated: Date.now(),
+    }));
+  }, []);
+
+  // Add Newsletter Lead
+  const addLead = useCallback((email: string, name?: string) => {
+    const newLead: NewsletterLead = {
+      id: 'lead-' + Date.now(),
+      email: email.trim(),
+      name: name?.trim(),
+      createdAt: Date.now(),
+    };
+    setData((prev) => ({
+      ...prev,
+      leads: [newLead, ...prev.leads],
+      lastUpdated: Date.now(),
+    }));
+  }, []);
+
+  // Delete Lead
+  const deleteLead = useCallback((leadId: string) => {
+    setData((prev) => ({
+      ...prev,
+      leads: prev.leads.filter((l) => l.id !== leadId),
+      lastUpdated: Date.now(),
+    }));
+  }, []);
+
   // Set preset theme by ID
   const setPresetTheme = useCallback((presetId: keyof typeof THEME_PRESETS) => {
     if (THEME_PRESETS[presetId]) {
@@ -258,7 +347,14 @@ export function useLinktree() {
     try {
       const parsed = JSON.parse(jsonStr);
       if (parsed && parsed.profile && Array.isArray(parsed.links)) {
-        setData(parsed);
+        setData({
+          ...INITIAL_STATE,
+          ...parsed,
+          features: {
+            ...INITIAL_STATE.features,
+            ...(parsed.features || {}),
+          },
+        });
         return true;
       }
     } catch (e) {
@@ -289,11 +385,15 @@ export function useLinktree() {
     incrementClick,
     updateProfile,
     updateTheme,
+    updateFeatures,
+    addLead,
+    deleteLead,
     setPresetTheme,
     resetToDefault,
     exportData,
     importData,
     totalClicks,
     activeLinks,
+    playClickSound,
   };
 }

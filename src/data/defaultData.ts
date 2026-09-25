@@ -161,7 +161,6 @@ export const INITIAL_STATE: LinktreeState = {
     verified: true,
     location: 'Brasil 🇧🇷',
     views: 1420,
-    socialPosition: 'top',
     footerText: 'Criado com Linktree • Feito para você',
     socialLinks: {
       instagram: 'https://instagram.com',
@@ -177,6 +176,73 @@ export const INITIAL_STATE: LinktreeState = {
     },
   },
   theme: THEME_PRESETS['midnight-black'],
+  features: {
+    bannerEnabled: true,
+    bannerText: '🚀 Repositório oficial configurado para Cloudflare Pages! Veja abaixo.',
+    bannerLink: 'https://github.com/manu0916/Linktree.git',
+    bannerBgColor: '#06b6d4',
+    bannerTextColor: '#09090b',
+    bannerIcon: 'sparkles',
+
+    showShareButton: true,
+    showViewsCounter: true,
+    viewsLabel: 'visualizações totais',
+    soundEffectsEnabled: true,
+
+    avatarSize: 'lg',
+    avatarShape: 'circle',
+    avatarGlow: 'gradient',
+    verifiedBadgeColor: 'cyan',
+    bioAlignment: 'center',
+    showLocation: true,
+
+    socialPosition: 'top',
+    socialStyle: 'glass',
+    socialIconSize: 'md',
+
+    layoutColumns: '1',
+    cardStyle: 'glass',
+    cardHoverEffect: 'scale',
+    showClicksPublicly: false,
+    showLinkIcons: true,
+    showLinkSubtitles: true,
+    openInNewTab: true,
+    highlightStyle: 'pulse',
+
+    newsletterEnabled: true,
+    newsletterTitle: '💌 Fique por dentro das novidades',
+    newsletterSubtitle: 'Receba lançamentos de novos projetos e atualizações exclusivas no seu e-mail.',
+    newsletterButtonText: 'Inscrever-se',
+    newsletterSuccessMessage: 'Obrigado por se inscrever! Entraremos em contato em breve.',
+
+    showAdminButtonInFooter: true,
+    adminButtonLabel: 'Admin',
+    footerSocials: false,
+
+    pageTitle: 'Manu | Árvore de Links Oficial',
+    metaDescription: 'Confira todos os links, projetos, redes sociais e chave pix de Manu.',
+
+    customDesign: {
+      useCustomColors: false,
+      backgroundType: 'preset',
+      solidBgColor: '#09090b',
+      gradientStart: '#0f172a',
+      gradientEnd: '#3b0764',
+      cardBgColor: 'rgba(24, 24, 27, 0.8)',
+      cardTextColor: '#f4f4f5',
+      cardSubtextColor: '#a1a1aa',
+      cardBorderColor: '#27272a',
+      accentColor: '#06b6d4',
+    },
+  },
+  leads: [
+    {
+      id: 'lead-1',
+      email: 'contato.exemplo@gmail.com',
+      name: 'Visitante Exemplo',
+      createdAt: Date.now() - 86400000 * 2,
+    },
+  ],
   links: [
     {
       id: 'l-1',
