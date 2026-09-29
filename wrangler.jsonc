@@ -1,6 +1,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cogdev-linktree",
+  "account_id": "a802d8fa0e93d6c11433c74a89545d7e",
   "main": "src/worker.js",
   "no_bundle": true,
   "compatibility_date": "2026-09-29",
@@ -13,7 +14,7 @@
     {
       "binding": "DB",
       "database_name": "cogdev-linktree",
-      "database_id": "00000000-0000-0000-0000-000000000000",
+      "database_id": "b2a19b4c-bf28-428f-9998-27ad6275df54",
       "migrations_dir": "migrations"
     }
   ],
