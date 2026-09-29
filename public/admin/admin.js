@@ -12,7 +12,6 @@
     loginView: document.querySelector("#login-view"),
     dashboardView: document.querySelector("#dashboard-view"),
     loginForm: document.querySelector("#login-form"),
-    loginEmail: document.querySelector("#login-email"),
     loginPassword: document.querySelector("#login-password"),
     loginButton: document.querySelector("#login-button"),
     loginError: document.querySelector("#login-error"),
@@ -258,7 +257,6 @@
       const data = await api("/api/auth/login", {
         method: "POST",
         body: JSON.stringify({
-          email: el.loginEmail.value,
           password: el.loginPassword.value,
         }),
       });

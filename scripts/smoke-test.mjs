@@ -105,10 +105,17 @@ assert.equal((await publicBefore.json()).profile.displayName, "Cog Dev");
 const unauthenticated = await call(env, "/api/admin/data");
 assert.equal(unauthenticated.status, 401);
 
+const rejectedLogin = await call(env, "/api/auth/login", {
+  method: "POST",
+  headers: { "content-type": "application/json", origin: "https://linktree.test" },
+  body: JSON.stringify({ password: "incorrect-password" }),
+});
+assert.equal(rejectedLogin.status, 401);
+
 const login = await call(env, "/api/auth/login", {
   method: "POST",
   headers: { "content-type": "application/json", origin: "https://linktree.test" },
-  body: JSON.stringify({ email: env.ADMIN_EMAIL, password }),
+  body: JSON.stringify({ password }),
 });
 assert.equal(login.status, 200);
 const loginBody = await login.json();

@@ -78,7 +78,6 @@ O arquivo `.dev.vars` já está ignorado pelo Git.
 Para produção, cadastre os valores diretamente na Cloudflare:
 
 ```bash
-npx wrangler secret put ADMIN_EMAIL
 npx wrangler secret put ADMIN_PASSWORD_HASH
 ```
 
@@ -109,7 +108,7 @@ Crie o projeto Pages uma única vez:
 npx wrangler pages project create cogdev-linktree --production-branch main
 ```
 
-Cadastre `ADMIN_EMAIL` e `ADMIN_PASSWORD_HASH` em **Workers & Pages → cogdev-linktree → Settings → Variables and Secrets**, marcando ambos como criptografados.
+Cadastre `ADMIN_PASSWORD_HASH` em **Workers & Pages → cogdev-linktree → Settings → Variables and Secrets**, marcando-o como criptografado. `ADMIN_EMAIL` é apenas o identificador interno da sessão; o formulário de acesso pede somente a senha.
 
 Depois publique:
 
