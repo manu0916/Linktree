@@ -4,11 +4,13 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npx wrangler@latest dev",
-    "deploy": "npx wrangler@latest deploy",
-    "db:local": "npx wrangler@latest d1 migrations apply cogdev-linktree --local",
-    "db:remote": "npx wrangler@latest d1 migrations apply cogdev-linktree --remote",
+    "dev": "npx wrangler@latest pages dev public",
+    "dev:worker": "npx wrangler@latest dev --config wrangler.worker.jsonc",
+    "deploy": "node scripts/wrangler-cogdev.mjs pages deploy public --project-name cogdev-linktree --branch main",
+    "deploy:worker": "node scripts/wrangler-cogdev.mjs deploy --config wrangler.worker.jsonc",
+    "db:local": "npx wrangler@latest d1 migrations apply DB --local",
+    "db:remote": "node scripts/wrangler-cogdev.mjs d1 migrations apply DB --remote --config wrangler.worker.jsonc",
     "hash-password": "node scripts/hash-password.mjs",
-    "check": "node --check src/worker.js && node --check public/app.js && node --check public/admin/admin.js && node scripts/check-security.mjs && node scripts/smoke-test.mjs"
+    "check": "node --check src/worker.js && node --check functions/[[path]].js && node --check scripts/wrangler-cogdev.mjs && node --check public/app.js && node --check public/admin/admin.js && node scripts/check-security.mjs && node scripts/smoke-test.mjs"
   }
 }

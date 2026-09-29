@@ -1,8 +1,15 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "cogdev-linktree",
-  "pages_build_output_dir": "./public",
+  "account_id": "a802d8fa0e93d6c11433c74a89545d7e",
+  "main": "src/worker.js",
+  "no_bundle": true,
   "compatibility_date": "2026-09-29",
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true
+  },
   "d1_databases": [
     {
       "binding": "DB",

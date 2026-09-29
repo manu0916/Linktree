@@ -1,6 +1,6 @@
 # Cog Dev — Linktree administrável
 
-Link hub oficial da Cog Dev com página pública e painel administrativo protegido.
+Link hub oficial da Cog Dev com página pública no Cloudflare Pages e painel administrativo protegido por Pages Functions.
 
 ## Recursos
 
@@ -20,7 +20,8 @@ Link hub oficial da Cog Dev com página pública e painel administrativo protegi
 
 - `/` — página pública;
 - `/admin` — acesso administrativo;
-- `src/worker.js` — API e segurança;
+- `functions/` — entrada das Pages Functions para rotas dinâmicas;
+- `src/worker.js` — API e segurança reutilizadas pelas Functions;
 - `migrations/` — estrutura do banco D1;
 - `public/` — interface pública e administrativa.
 
@@ -91,8 +92,8 @@ npm run dev
 
 Abra:
 
-- site público: `http://localhost:8787`;
-- administração: `http://localhost:8787/admin`.
+- site público: URL local exibida pelo Wrangler;
+- administração: acrescente `/admin` à URL exibida.
 
 ## Publicar
 
@@ -102,13 +103,21 @@ Primeiro aplique as migrations no banco remoto:
 npm run db:remote
 ```
 
+Crie o projeto Pages uma única vez:
+
+```bash
+npx wrangler pages project create cogdev-linktree --production-branch main
+```
+
+Cadastre `ADMIN_EMAIL` e `ADMIN_PASSWORD_HASH` em **Workers & Pages → cogdev-linktree → Settings → Variables and Secrets**, marcando ambos como criptografados.
+
 Depois publique:
 
 ```bash
 npm run deploy
 ```
 
-Também é possível conectar este repositório ao Cloudflare Workers Builds. O comando de deploy deve ser `npm run deploy`.
+O endereço de produção é `https://cogdev-linktree.pages.dev`. A configuração anterior do Worker foi preservada em `wrangler.worker.jsonc`; `npm run deploy:worker` pode ser usado como contingência.
 
 ## Verificações
 
