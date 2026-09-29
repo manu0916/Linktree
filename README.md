@@ -1,64 +1,131 @@
-# BioLink Pro - Personalizável & Moderno
+# Cog Dev — Linktree administrável
 
-Plataforma completa de Bio Links estilo Linktree com personalização total via Painel de Administrador em tempo real.
+Link hub oficial da Cog Dev com página pública e painel administrativo protegido.
 
-## 🚀 Como Executar Localmente
+## Recursos
 
-### Pré-requisitos
-- [Node.js](https://nodejs.org/) (versão 18 ou superior)
-- `npm`, `yarn` ou `pnpm`
+- Nome e descrição editáveis;
+- upload da imagem principal;
+- links ilimitados com nome, descrição, URL e imagem;
+- ativação, edição, exclusão e reordenação dos links;
+- contagem de cliques;
+- dados persistentes no Cloudflare D1;
+- imagens armazenadas no Cloudflare R2;
+- senha protegida por PBKDF2 e armazenada somente como secret;
+- sessão `HttpOnly`, `Secure` e `SameSite=Strict`;
+- proteção CSRF, rate limit, CSP e validação server-side;
+- nenhuma credencial no frontend ou no repositório.
 
-### Instalação
+## Estrutura
 
-1. Extraia o arquivo ZIP em uma pasta da sua preferência.
-2. Abra o terminal na pasta do projeto e instale as dependências:
+- `/` — página pública;
+- `/admin` — acesso administrativo;
+- `src/worker.js` — API e segurança;
+- `migrations/` — estrutura do banco D1;
+- `public/` — interface pública e administrativa.
+
+## Pré-requisitos
+
+- Node.js 20 ou superior;
+- uma conta Cloudflare;
+- Wrangler autenticado na sua conta.
+
+## Instalação local
+
 ```bash
 npm install
 ```
 
-3. Inicie o servidor de desenvolvimento:
+Crie os recursos da Cloudflare:
+
+```bash
+npx wrangler login
+npx wrangler d1 create cogdev-linktree
+npx wrangler r2 bucket create cogdev-linktree-media
+```
+
+Copie o `database_id` retornado pelo primeiro comando e substitua o identificador de zeros em `wrangler.jsonc`.
+
+Crie o banco local:
+
+```bash
+npm run db:local
+```
+
+## Configurar o administrador com segurança
+
+As credenciais nunca devem ser escritas nos arquivos públicos ou enviadas ao GitHub.
+
+Gere o hash da senha:
+
+```bash
+npm run hash-password
+```
+
+O terminal solicitará a senha sem mostrá-la. Copie somente o hash gerado.
+
+Para desenvolvimento local, copie `.dev.vars.example` para `.dev.vars` e informe:
+
+```text
+ADMIN_EMAIL=seu-email
+ADMIN_PASSWORD_HASH=hash-gerado
+SESSION_TTL_SECONDS=28800
+```
+
+O arquivo `.dev.vars` já está ignorado pelo Git.
+
+Para produção, cadastre os valores diretamente na Cloudflare:
+
+```bash
+npx wrangler secret put ADMIN_EMAIL
+npx wrangler secret put ADMIN_PASSWORD_HASH
+```
+
+Não use uma variável `VITE_*`, arquivo JavaScript ou HTML para guardar essas informações.
+
+## Executar
+
 ```bash
 npm run dev
 ```
 
-4. Acesse no navegador:
+Abra:
+
+- site público: `http://localhost:8787`;
+- administração: `http://localhost:8787/admin`.
+
+## Publicar
+
+Primeiro aplique as migrations no banco remoto:
+
+```bash
+npm run db:remote
 ```
-http://localhost:3000
+
+Depois publique:
+
+```bash
+npm run deploy
 ```
 
----
+Também é possível conectar este repositório ao Cloudflare Workers Builds. O comando de deploy deve ser `npm run deploy`.
 
-## 🛠️ Tecnologias Utilizadas
-- **React 19** + **TypeScript**
-- **Vite** (Build tool ultrarrápido)
-- **Tailwind CSS v4** (Estilização moderna e responsiva)
-- **Lucide React** (Ícones de alta qualidade)
-- **Motion** (Animações suaves)
+## Verificações
 
----
+```bash
+npm run check
+```
 
-## 🔐 Acesso ao Painel Admin
-- O acesso ao painel de administração é protegido e exclusivo via URL:
-  - Adicione **/admin** ao final da URL do site no navegador (ex: `http://localhost:3000/admin` ou `https://seusite.com/admin`).
-  - Nenhum botão administrativo é exibido na página pública para os visitantes.
-- **Credenciais padrão:**
-  - E-mail: `manu4432d@gmail.com`
-  - Senha: `75319@Manu2`
+Esse comando valida a sintaxe dos arquivos principais e procura possíveis segredos dentro do bundle público.
 
----
+## Limites de upload
 
-## ✨ Recursos Inclusos
-- **Links Ilimitados**: Adicione, edite, exclua, fixe com destaque (glow, pulse, shimmer), reorganize e configure ícones e subtítulos.
-- **Personalização Completa do Front-End**:
-  - Faixa Superior (Banner de destaque configurável com links e ícones).
-  - Avatar personalizável (formato, tamanho, borda iluminada/glow neon/gold/degradê).
-  - Selo de verificado colorido.
-  - Contador de visualizações públicas (ativar/desativar).
-  - Botão de compartilhamento e QR Code integrado.
-  - Grade de links em 1 ou 2 colunas.
-  - Efeitos de hover nos cards de link (zoom, lift, neon glow, bounce).
-  - Captura de Leads / Newsletter funcional com exportação CSV e listagem no admin.
-  - Redes sociais configuráveis no topo e no rodapé.
-  - Título da aba e meta tags de SEO configuráveis diretamente pelo painel.
-- **Gerenciador de Temas**: Diversos temas prontos (Dark Neon, Cyberpunk, Minimalist, Rose Gold, Sunset Glow, Ocean Deep, Glassmorphism, etc.) ou crie seu próprio gradiente e cores customizadas.
-- **Contador de Cliques**: Acompanhe as estatísticas de cada link no painel analítico.
+- formatos: PNG, JPG ou WebP;
+- tamanho máximo: 2 MB;
+- SVG não é aceito para impedir conteúdo ativo em uploads.
+
+## Observações importantes
+
+- Trocar a senha exige gerar um novo hash e atualizar o secret `ADMIN_PASSWORD_HASH`.
+- Excluir um arquivo do branch atual não o remove automaticamente do histórico antigo do Git.
+- Se versões anteriores do projeto continham uma senha no código, essa senha deve ser considerada exposta e não deve ser reutilizada.

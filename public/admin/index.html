@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <meta name="theme-color" content="#07101f" />
+    <title>Administração | Cog Dev</title>
+    <link rel="icon" type="image/png" href="/assets/logo.png" />
+    <link rel="stylesheet" href="/admin/admin.css" />
+    <script src="/admin/admin.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <section id="login-view" class="login-view" aria-labelledby="login-title">
+        <div class="login-card">
+          <div class="login-brand">
+            <img src="/assets/logo.png" alt="" />
+            <span>COG<strong>DEV</strong></span>
+          </div>
+          <p class="kicker">ÁREA RESTRITA</p>
+          <h1 id="login-title">Acesso administrativo</h1>
+          <p class="login-copy">Entre para atualizar o nome, as imagens e os links exibidos no site.</p>
+          <form id="login-form" novalidate>
+            <label>
+              <span>E-mail</span>
+              <input id="login-email" type="email" autocomplete="username" required maxlength="254" />
+            </label>
+            <label>
+              <span>Senha</span>
+              <input
+                id="login-password"
+                type="password"
+                autocomplete="current-password"
+                required
+                minlength="12"
+                maxlength="128"
+              />
+            </label>
+            <p id="login-error" class="form-error" role="alert" hidden></p>
+            <button id="login-button" class="primary-button" type="submit">Entrar com segurança</button>
+          </form>
+          <a class="back-link" href="/">Voltar ao site público</a>
+        </div>
+      </section>
+
+      <section id="dashboard-view" class="dashboard" hidden>
+        <header class="dashboard-header">
+          <a class="brand" href="/" target="_blank" rel="noopener">
+            <img src="/assets/logo.png" alt="" />
+            <span>COG<strong>DEV</strong></span>
+          </a>
+          <div class="header-actions">
+            <a class="secondary-button" href="/" target="_blank" rel="noopener">Ver site</a>
+            <button id="logout-button" class="ghost-button" type="button">Sair</button>
+          </div>
+        </header>
+
+        <div class="dashboard-shell">
+          <div class="page-heading">
+            <div>
+              <p class="kicker">PAINEL ADMINISTRATIVO</p>
+              <h1>Conteúdo do Linktree</h1>
+              <p>As alterações salvas aparecem para todos os visitantes.</p>
+            </div>
+          </div>
+
+          <section class="panel" aria-labelledby="profile-title">
+            <div class="panel-heading">
+              <div>
+                <span class="step-number">01</span>
+                <h2 id="profile-title">Perfil público</h2>
+              </div>
+              <span>Nome, descrição e imagem principal</span>
+            </div>
+            <form id="profile-form" class="profile-form">
+              <div class="profile-image-control">
+                <img id="profile-preview" src="/assets/logo.png" alt="Prévia da imagem do perfil" />
+                <label class="upload-button">
+                  <span>Trocar imagem</span>
+                  <input id="profile-image" type="file" accept="image/png,image/jpeg,image/webp" />
+                </label>
+                <small>PNG, JPG ou WebP. Máximo de 2 MB.</small>
+              </div>
+              <div class="form-fields">
+                <label>
+                  <span>Nome exibido</span>
+                  <input id="profile-name" type="text" required maxlength="60" />
+                </label>
+                <label>
+                  <span>Descrição</span>
+                  <textarea id="profile-bio" rows="3" maxlength="180"></textarea>
+                  <small><span id="bio-counter">0</span>/180 caracteres</small>
+                </label>
+                <div class="form-actions">
+                  <button id="save-profile" class="primary-button" type="submit">Salvar perfil</button>
+                </div>
+              </div>
+            </form>
+          </section>
+
+          <section class="panel" aria-labelledby="links-panel-title">
+            <div class="panel-heading links-heading">
+              <div>
+                <span class="step-number">02</span>
+                <h2 id="links-panel-title">Links publicados</h2>
+              </div>
+              <button id="add-link-button" class="primary-button" type="button">Adicionar link</button>
+            </div>
+            <div id="admin-links" class="admin-links"></div>
+            <div id="admin-empty" class="admin-empty" hidden>
+              <p>Nenhum link cadastrado.</p>
+              <span>Adicione o primeiro destino para publicar no site.</span>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="link-dialog" aria-labelledby="link-dialog-title">
+      <form id="link-form" class="dialog-card">
+        <div class="dialog-heading">
+          <div>
+            <p class="kicker">CONFIGURAÇÃO</p>
+            <h2 id="link-dialog-title">Adicionar link</h2>
+          </div>
+          <button id="close-dialog" class="icon-button" type="button" aria-label="Fechar">×</button>
+        </div>
+        <input id="link-id" type="hidden" />
+        <input id="link-image-key" type="hidden" />
+        <label>
+          <span>Nome que o cliente verá</span>
+          <input id="link-title" type="text" required maxlength="80" />
+        </label>
+        <label>
+          <span>Descrição curta</span>
+          <input id="link-subtitle" type="text" maxlength="140" />
+        </label>
+        <label>
+          <span>Link de redirecionamento</span>
+          <input id="link-url" type="url" required maxlength="2048" placeholder="https://seusite.com.br" />
+        </label>
+        <div class="image-field">
+          <img id="link-image-preview" src="/assets/logo.png" alt="Prévia da imagem do link" />
+          <label class="upload-button">
+            <span>Escolher imagem</span>
+            <input id="link-image" type="file" accept="image/png,image/jpeg,image/webp" />
+          </label>
+        </div>
+        <label class="checkbox-label">
+          <input id="link-active" type="checkbox" checked />
+          <span>Exibir este link no site</span>
+        </label>
+        <p id="link-error" class="form-error" role="alert" hidden></p>
+        <div class="dialog-actions">
+          <button id="cancel-dialog" class="secondary-button" type="button">Cancelar</button>
+          <button id="save-link" class="primary-button" type="submit">Salvar link</button>
+        </div>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+  </body>
+</html>

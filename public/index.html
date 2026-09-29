@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07101f" />
+    <meta
+      name="description"
+      content="Acesse os projetos, produtos e canais oficiais da Cog Dev."
+    />
+    <title>Cog Dev | Links oficiais</title>
+    <link rel="icon" type="image/png" href="/assets/logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <div class="page-grid" aria-hidden="true"></div>
+    <main class="shell">
+      <header class="topbar">
+        <a class="wordmark" href="/" aria-label="Página inicial da Cog Dev">
+          <img src="/assets/logo.png" alt="" />
+          <span>COG<strong>DEV</strong></span>
+        </a>
+        <span class="studio">SOFTWARE STUDIO</span>
+      </header>
+
+      <section class="profile" aria-labelledby="profile-name">
+        <div class="avatar-frame">
+          <img id="profile-image" src="/assets/logo.png" alt="" />
+        </div>
+        <p class="eyebrow"><span></span> LINKS OFICIAIS</p>
+        <h1 id="profile-name">Cog Dev</h1>
+        <p id="profile-bio">Softwares, CRMs e sistemas sob medida.</p>
+      </section>
+
+      <section class="links-section" aria-labelledby="links-title">
+        <div class="section-label">
+          <h2 id="links-title">Conheça nosso trabalho</h2>
+          <span id="links-count" aria-live="polite"></span>
+        </div>
+
+        <div id="loading-state" class="loading-state" role="status">
+          <span></span>
+          <p>Carregando links...</p>
+        </div>
+        <div id="links-list" class="links-list" hidden></div>
+        <div id="empty-state" class="empty-state" hidden>
+          <span>00</span>
+          <div>
+            <h3>Novidades em breve.</h3>
+            <p>Os próximos projetos da Cog Dev aparecerão aqui.</p>
+          </div>
+        </div>
+        <div id="error-state" class="error-state" hidden role="alert">
+          <p>Não foi possível carregar os links agora.</p>
+          <button id="retry-button" type="button">Tentar novamente</button>
+        </div>
+      </section>
+
+      <footer>
+        <p>© <span id="current-year"></span> Cog Dev</p>
+        <p>Tecnologia que move negócios.</p>
+      </footer>
+    </main>
+  </body>
+</html>

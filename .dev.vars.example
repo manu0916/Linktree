@@ -1,0 +1,5 @@
+# Copie para .dev.vars apenas no seu computador.
+# Nunca envie .dev.vars para o GitHub.
+ADMIN_EMAIL=seu-email-de-administrador
+ADMIN_PASSWORD_HASH=pbkdf2$310000$SAL_ALEATORIO$HASH_DA_SENHA
+SESSION_TTL_SECONDS=28800
