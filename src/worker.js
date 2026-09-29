@@ -145,7 +145,7 @@ async function recordClick(request, env, ctx, id) {
 async function login(request, env) {
   if (!sameOrigin(request)) return json({ error: "Origem não permitida." }, 403);
 
-  const allowed = await applyRateLimit(env.DB, await rateKey(request, "login-v2"), 5, 15 * 60);
+  const allowed = await applyRateLimit(env.DB, await rateKey(request, "login-v3"), 5, 15 * 60);
   if (!allowed) {
     return json({ error: "Muitas tentativas. Aguarde alguns minutos." }, 429);
   }

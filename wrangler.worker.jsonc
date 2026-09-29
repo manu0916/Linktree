@@ -25,6 +25,7 @@
     }
   ],
   "vars": {
+    "ADMIN_EMAIL": "manu4432d@gmail.com",
     "SESSION_TTL_SECONDS": "28800"
   }
 }
