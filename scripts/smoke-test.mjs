@@ -76,8 +76,8 @@ class R2Mock {
 
 function passwordHash(password) {
   const salt = randomBytes(24);
-  const hash = pbkdf2Sync(password, salt, 310_000, 32, "sha256");
-  return `pbkdf2$310000$${salt.toString("base64url")}$${hash.toString("base64url")}`;
+  const hash = pbkdf2Sync(password, salt, 100_000, 32, "sha256");
+  return `pbkdf2$100000$${salt.toString("base64url")}$${hash.toString("base64url")}`;
 }
 
 async function call(env, path, init = {}) {

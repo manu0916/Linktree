@@ -145,7 +145,7 @@ async function recordClick(request, env, ctx, id) {
 async function login(request, env) {
   if (!sameOrigin(request)) return json({ error: "Origem não permitida." }, 403);
 
-  const allowed = await applyRateLimit(env.DB, await rateKey(request, "login"), 5, 15 * 60);
+  const allowed = await applyRateLimit(env.DB, await rateKey(request, "login-v2"), 5, 15 * 60);
   if (!allowed) {
     return json({ error: "Muitas tentativas. Aguarde alguns minutos." }, 429);
   }
@@ -583,7 +583,11 @@ async function verifyPassword(password, encoded) {
       256,
     );
     return timingSafeBytes(new Uint8Array(bits), expected);
-  } catch {
+  } catch (error) {
+    console.warn("Password verification error", {
+      name: error?.name || "Error",
+      message: error?.message || "Unknown error",
+    });
     return false;
   }
 }

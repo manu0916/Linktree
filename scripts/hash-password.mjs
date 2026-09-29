@@ -1,6 +1,6 @@
 import { pbkdf2Sync, randomBytes } from "node:crypto";
 
-const ITERATIONS = 310_000;
+const ITERATIONS = 100_000;
 
 function readHidden(prompt) {
   return new Promise((resolve, reject) => {
